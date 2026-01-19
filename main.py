@@ -1,21 +1,28 @@
 from modules import functions
 import FreeSimpleGUI as sg
 
-label1 = sg.Text("select files to compress:")
-input1 = sg.Input()
-choose_button1 = sg.FileBrowse("Choose")
+label = sg.Text("Type in a to_do:")
+input_box = sg.Input(tooltip="Enter a todo", key="to_do")
+add_button = sg.Button("Add")
 
-label2 = sg.Text("select destination folder:")
-input2 = sg.Input()
-choose_button2 = sg.FolderBrowse("Choose")
+window = sg.Window('My To do App',
+                   layout = [[label],[input_box,add_button]],
+                   font   = ('Helvetica',15)
 
-compress_button =sg.Button("Compress")
-
-window = sg.Window("File compressor",
-                   layout = [[label1,input1,choose_button1],
-                             [label2, input2, choose_button2],
-                             [compress_button]
-                             ]
                    )
-window.read()
+while True:
+        event, values = window.read()
+        print(values)
+        match event:
+            case "Add":
+                todos = functions.get_todos()
+                new_todo = values['to_do'] + "\n"
+                todos.append(new_todo)
+                functions.write_todos(todos)
+            case sg.WIN_CLOSED:
+                break
+
+            
+            
+
 window.close()
